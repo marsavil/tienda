@@ -1,14 +1,35 @@
-'use client'
+"use client";
 // Importar los estilos de Tailwind CSS
-import 'tailwindcss/tailwind.css';
-import { useState } from "react";
+import "tailwindcss/tailwind.css";
+import { useEffect, useState } from "react";
 import { TiThMenuOutline } from "react-icons/ti";
 import { PiSignInBold } from "react-icons/pi";
 import { FaHeadphonesSimple } from "react-icons/fa6";
 import { AiOutlineHome, AiOutlineShopping } from "react-icons/ai";
 import Link from "next/link";
+import UserIcon from "./UserIcon";
+import { fetchUser } from "@/lib/actions/user.actions";
 
-const Topbar = () => {
+const Topbar = ({ userId }: { userId: string }) => {
+  console.log("este es el id del usuario", userId);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        const userData = await fetchUser(userId);
+        setUser(userData);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    if (userId) {
+      fetchUserData();
+    }
+  }, [userId]);
+  console.log(user?.image)
+
   const [menuOpen, setMenuOpen] = useState(false);
 
   const toggleMenu = () => {
@@ -16,7 +37,7 @@ const Topbar = () => {
   };
 
   return (
-    <nav className="topbar bg-gray-800 p-4 flex justify-between items-center">
+    <nav className="topbar">
       <div className="topbar_logo">
         <Link href="/home" className="topbar_link">
           <FaHeadphonesSimple size={40} color="cyan" />
@@ -31,10 +52,17 @@ const Topbar = () => {
           <AiOutlineShopping size={30} color="white" />
           <span className="hidden md:inline text-light-1">Productos</span>
         </Link>
-        <Link href="/sign-up" className="topbar_link">
-          <PiSignInBold size={30} color="cyan" />
-          <span className="hidden md:inline text-light-1">Regístrese</span>
-        </Link>
+        {userId ? (
+          <Link href="/profile" className="topbar_link">
+            <UserIcon userImage={user?.image} size={30} />
+            <span className="hidden md:inline text-light-1">Perfil</span>
+          </Link>
+        ) : (
+          <Link href="/sign-up" className="topbar_link">
+            <PiSignInBold size={30} color="cyan" />
+            <span className="hidden md:inline text-light-1">Regístrese</span>
+          </Link>
+        )}
       </div>
       <div className="topbar_menu md:hidden">
         <button onClick={toggleMenu} className="text-light-1">
@@ -53,10 +81,19 @@ const Topbar = () => {
               <AiOutlineShopping size={30} color="cyan" />
               <span className="text-light-1">Productos</span>
             </Link>
-            <Link href="/sign-up" className="topbar_link">
-              <PiSignInBold size={30} color="cyan" />
-              <span className="hidden md:inline text-light-1">Regístrese</span>
-        </Link>
+            {userId ? (
+              <Link href="/profile" className="topbar_link">
+                <UserIcon userImage={user?.image} size={30} />
+                <span className="hidden md:inline text-light-1">Perfil</span>
+              </Link>
+            ) : (
+              <Link href="/sign-up" className="topbar_link">
+                <PiSignInBold size={30} color="cyan" />
+                <span className="hidden md:inline text-light-1">
+                  Regístrese
+                </span>
+              </Link>
+            )}
           </div>
         )}
       </div>
