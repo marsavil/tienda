@@ -13,7 +13,7 @@ const UserIcon = ({ userImage, size }: Props) => {
       alt="User" 
       width={size} 
       height={size} 
-      className="rounded-full object-contain"
+      className="rounded-full  border-2"
     />
     )
 };

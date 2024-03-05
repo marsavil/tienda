@@ -9,8 +9,13 @@ import { AiOutlineHome, AiOutlineShopping } from "react-icons/ai";
 import Link from "next/link";
 import UserIcon from "./UserIcon";
 import { fetchUser } from "@/lib/actions/user.actions";
+import { usePathname } from "next/navigation";
+import { PiSignOutBold } from "react-icons/pi";
+import { SignOutButton } from "@clerk/nextjs";
 
 const Topbar = ({ userId }: { userId: string }) => {
+  const pathname = usePathname();
+
   console.log("este es el id del usuario", userId);
   const [user, setUser] = useState(null);
 
@@ -28,7 +33,7 @@ const Topbar = ({ userId }: { userId: string }) => {
       fetchUserData();
     }
   }, [userId]);
-  console.log(user?.image)
+  console.log(user?.image);
 
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -40,7 +45,11 @@ const Topbar = ({ userId }: { userId: string }) => {
     <nav className="topbar">
       <div className="topbar_logo">
         <Link href="/home" className="topbar_link">
-          <FaHeadphonesSimple size={40} color="cyan" />
+          <FaHeadphonesSimple
+            size={40}
+            color="cyan"
+            className="rouded-full object-contain"
+          />
         </Link>
       </div>
       <div className="topbar_links hidden md:flex space-x-4">
@@ -48,12 +57,12 @@ const Topbar = ({ userId }: { userId: string }) => {
           <AiOutlineHome size={30} color="cyan" />
           <span className="hidden md:inline text-light-1">Inicio</span>
         </Link>
-        <Link href="/home" className="topbar_link">
-          <AiOutlineShopping size={30} color="white" />
+        <Link href="/home" className="topbar_link ">
+          <AiOutlineShopping size={30} color="cyan" />
           <span className="hidden md:inline text-light-1">Productos</span>
         </Link>
         {userId ? (
-          <Link href="/profile" className="topbar_link">
+          <Link href={`/profile/${userId}`} className="topbar_link">
             <UserIcon userImage={user?.image} size={30} />
             <span className="hidden md:inline text-light-1">Perfil</span>
           </Link>
@@ -62,6 +71,14 @@ const Topbar = ({ userId }: { userId: string }) => {
             <PiSignInBold size={30} color="cyan" />
             <span className="hidden md:inline text-light-1">Regístrese</span>
           </Link>
+        )}
+        {user && (
+          <SignOutButton signOutCallback={() => router.push("/sign-in")}>
+            <div className="flex cursor-pointer gap-4 p-4">
+              <PiSignOutBold size={30} color="cyan" />
+              <p className="text-light-2 max-lg:hidden">Logout</p>
+            </div>
+          </SignOutButton>
         )}
       </div>
       <div className="topbar_menu md:hidden">
@@ -82,7 +99,7 @@ const Topbar = ({ userId }: { userId: string }) => {
               <span className="text-light-1">Productos</span>
             </Link>
             {userId ? (
-              <Link href="/profile" className="topbar_link">
+              <Link href={`/profile/${userId}`} className="topbar_link">
                 <UserIcon userImage={user?.image} size={30} />
                 <span className="hidden md:inline text-light-1">Perfil</span>
               </Link>
@@ -93,6 +110,14 @@ const Topbar = ({ userId }: { userId: string }) => {
                   Regístrese
                 </span>
               </Link>
+            )}
+            {user && (
+              <SignOutButton signOutCallback={() => router.push("/sign-in")}>
+                <div className="flex cursor-pointer gap-4 p-4">
+                  <PiSignOutBold size={30} color="cyan" />
+                  <p className="text-light-2 max-lg:hidden">Logout</p>
+                </div>
+              </SignOutButton>
             )}
           </div>
         )}

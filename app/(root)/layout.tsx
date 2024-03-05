@@ -23,9 +23,9 @@ export default async function RootLayout({
   const user = await currentUser();
 
   return (
-    <>
+    <main>
       <Topbar userId={user?.id}/>
       {children}
-    </>
+    </main>
   );
 }
