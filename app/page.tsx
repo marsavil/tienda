@@ -1,4 +1,4 @@
-import LandingNavigation from "@/components/LandingNavigation";
+import LandingNavigation from "@/components/shared/LandingNavigation";
 import { currentUser } from "@clerk/nextjs";
 import Image from "next/image";
 
@@ -12,8 +12,8 @@ export default async function Landing() {
       </div>
       
       <div className="flex flex-col justify-evenly items-center p-5">
-        <h1 className='head-text text-center text-dark-1'>Nombre de la tienda</h1>
-        <p className="text-lg font-semibold text-center">Bienvenid@ a nuestra tienda</p>
+        <h1 className='head-text text-center'>Nombre de la tienda</h1>
+        <p className="text-lg font-semibold text-center text-light-1">Bienvenid@ a nuestra tienda</p>
         <LandingNavigation id={user?.id} />
       </div>
     </main>

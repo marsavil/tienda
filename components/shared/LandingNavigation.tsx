@@ -1,5 +1,6 @@
 'use client'
 import { redirect, useRouter} from "next/navigation";
+import { Button } from "../ui/button";
 const LandingNavigation = (id: string) => {
   const router = useRouter();
   console.log(id)
@@ -11,16 +12,16 @@ const LandingNavigation = (id: string) => {
   };
   return (
     <div className="flex flex-col justify-center gap-8">
-      <button
+      <Button
         onClick={handleExploreClick}
-        className="landing_btn"
+        className="landing_btn primary-500"
       >
         Explorar productos
-      </button>
+      </Button>
       { id? null :  (
-      <button className="landing_btn" onClick={handleLogin}>
+      <Button className="landing_btn " onClick={handleLogin}>
         Iniciar sesión
-      </button>
+      </Button>
       )}
     </div>
   )
